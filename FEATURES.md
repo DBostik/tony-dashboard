@@ -88,11 +88,8 @@ A web dashboard that gives you **instant visual access** to everything Tony know
 - "Days until broke" countdown (harsh accountability)
 - Integration with bank/payment APIs
 
-### 7. Content Pipeline Integration
-- Pull status from Crevara
-- Videos in progress
-- Publishing schedule
-- Performance metrics (views, engagement)
+### 7. ~~Content Pipeline Integration~~ [REMOVED]
+**Dave's decision:** Keep Crevara separate from Tony Dashboard. No integration.
 
 ### 8. Accountability Enforcer
 - Red alerts when questions go unanswered
