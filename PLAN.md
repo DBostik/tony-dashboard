@@ -153,7 +153,7 @@ tony-dashboard/
 - [ ] User testing with Dave
 
 ### Phase 5: Advanced Features (Future)
-- [ ] Crevara integration (video pipeline status)
+- [ ] ~~Crevara integration~~ [REMOVED - keep apps separate]
 - [ ] Analytics dashboard (token usage over time)
 - [ ] Memory search with vector similarity
 - [ ] Chat interface (send messages to Tony from dashboard)
@@ -172,11 +172,11 @@ Based on deep dive of Dave's needs:
    - Monthly burn rate alert
    - "Days until broke" countdown (harsh but effective accountability)
 
-2. **Content Pipeline Status**
-   - Pull from Crevara
-   - Videos in progress
-   - Publishing schedule
-   - Performance metrics (views, engagement)
+2. **~~Content Pipeline Status~~** [REMOVED - Dave wants Crevara separate]
+   - ~~Pull from Crevara~~
+   - ~~Videos in progress~~
+   - ~~Publishing schedule~~
+   - ~~Performance metrics (views, engagement)~~
 
 3. **Accountability Enforcer**
    - Red alert when Dave hasn't answered questions
