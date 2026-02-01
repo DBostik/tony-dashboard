@@ -1,10 +1,10 @@
 import { useState } from 'react'
-import { Search, RotateCw, FileText, Folder, Settings, Calendar, Brain } from 'lucide-react'
+import { Search, RotateCw, FileText, Folder, Settings, Calendar, Brain, ArrowLeft } from 'lucide-react'
 
 // Mock data for initial build
 const FILES = [
   { id: '1', title: '2026-02-01.md', category: 'DAILY', date: '2026-02-01', content: '# Daily Log...' },
-  { id: '2', title: 'MEMORY.md', category: 'CORE', date: '2026-02-01', content: '# Long-Term Memory...' },
+  { id: '2', title: 'MEMORY.md', category: 'CORE', date: '2026-02-01', content: '# Long-Term Memory\n\nThis is the core memory file for Tony...' },
   { id: '3', title: 'SOUL.md', category: 'CORE', date: '2026-01-30', content: '# SOUL.md - Who You Are...' },
   { id: '4', title: 'media-kit.md', category: 'NOTES', date: '2026-01-30', content: '# Media Kit...' },
   { id: '5', title: 'PLAN.md', category: 'PROJECTS', date: '2026-02-01', content: '# Tony Dashboard Plan...' },
@@ -15,7 +15,11 @@ const CATEGORIES = ['ALL', 'DAILY', 'CORE', 'NOTES', 'PROJECTS', 'SYSTEMS']
 export default function SecondBrain() {
   const [selectedCategory, setSelectedCategory] = useState('ALL')
   const [searchQuery, setSearchQuery] = useState('')
-  const [selectedFile, setSelectedFile] = useState(FILES[0])
+  const [selectedFile, setSelectedFile] = useState<typeof FILES[0] | null>(null)
+
+  // Mobile: If a file is selected, show content view. If null, show list view.
+  const showList = !selectedFile
+  const showContent = !!selectedFile
 
   const filteredFiles = FILES.filter(file => {
     const matchesCategory = selectedCategory === 'ALL' || file.category === selectedCategory
@@ -24,11 +28,16 @@ export default function SecondBrain() {
   })
 
   return (
-    <div className="flex h-[calc(100vh-80px)]">
-      {/* Sidebar */}
-      <div className="w-80 border-r border-slate-800 bg-slate-900/30 flex flex-col">
+    <div className="flex h-[calc(100vh-80px)] overflow-hidden">
+      
+      {/* Sidebar (File List) */}
+      <div className={`
+        flex-col border-r border-slate-800 bg-slate-900/30 w-full md:w-80 transition-all duration-300
+        ${showList ? 'flex' : 'hidden md:flex'}
+      `}>
+        
         {/* Search & Filters */}
-        <div className="p-4 border-b border-slate-800 space-y-4">
+        <div className="p-4 border-b border-slate-800 space-y-4 shrink-0">
           <div className="relative">
             <Search className="absolute left-3 top-2.5 w-4 h-4 text-slate-500" />
             <input
@@ -64,8 +73,8 @@ export default function SecondBrain() {
             <button
               key={file.id}
               onClick={() => setSelectedFile(file)}
-              className={`w-full text-left px-3 py-2.5 rounded-md mb-1 flex items-center gap-3 transition-colors ${
-                selectedFile.id === file.id
+              className={`w-full text-left px-3 py-3 rounded-md mb-1 flex items-center gap-3 transition-colors ${
+                selectedFile?.id === file.id
                   ? 'bg-blue-500/10 text-blue-400 border border-blue-500/20'
                   : 'text-slate-400 hover:bg-slate-800 hover:text-slate-200'
               }`}
@@ -77,7 +86,7 @@ export default function SecondBrain() {
         </div>
 
         {/* Footer */}
-        <div className="p-4 border-t border-slate-800">
+        <div className="p-4 border-t border-slate-800 shrink-0">
           <button className="w-full flex items-center justify-center gap-2 px-4 py-2 bg-slate-800 hover:bg-slate-700 text-slate-300 rounded-md text-sm font-medium transition-colors">
             <RotateCw className="w-4 h-4" />
             REFRESH LIBRARY
@@ -85,26 +94,47 @@ export default function SecondBrain() {
         </div>
       </div>
 
-      {/* Main Content */}
-      <div className="flex-1 bg-slate-950 p-8 overflow-y-auto">
-        <div className="max-w-4xl mx-auto">
-          <div className="flex items-center justify-between mb-8 pb-4 border-b border-slate-800">
-            <div>
-              <span className="text-xs font-bold text-blue-400 mb-1 block">{selectedFile.category}</span>
-              <h1 className="text-3xl font-bold text-white">{selectedFile.title}</h1>
+      {/* Main Content Viewer */}
+      <div className={`
+        flex-1 bg-slate-950 p-4 md:p-8 overflow-y-auto w-full
+        ${showContent ? 'block' : 'hidden md:block'}
+      `}>
+        {selectedFile ? (
+          <div className="max-w-4xl mx-auto">
+            {/* Mobile Back Button */}
+            <button 
+              onClick={() => setSelectedFile(null)}
+              className="md:hidden flex items-center gap-2 text-slate-400 hover:text-white mb-6"
+            >
+              <ArrowLeft className="w-4 h-4" />
+              Back to List
+            </button>
+
+            <div className="flex items-center justify-between mb-8 pb-4 border-b border-slate-800">
+              <div>
+                <span className="text-xs font-bold text-blue-400 mb-1 block">{selectedFile.category}</span>
+                <h1 className="text-2xl md:text-3xl font-bold text-white break-all">{selectedFile.title}</h1>
+              </div>
+              <div className="text-sm text-slate-500 whitespace-nowrap ml-4">{selectedFile.date}</div>
             </div>
-            <div className="text-sm text-slate-500">{selectedFile.date}</div>
+            
+            <div className="prose prose-invert max-w-none">
+              <div className="p-4 bg-slate-900/50 border border-slate-800 rounded-lg">
+                 <p className="text-slate-400 italic mb-4">
+                  (This is a preview. Real content will load from OpenClaw API)
+                </p>
+                <pre className="whitespace-pre-wrap text-sm text-slate-300 font-mono overflow-x-auto">
+                  {selectedFile.content}
+                </pre>
+              </div>
+            </div>
           </div>
-          
-          <div className="prose prose-invert max-w-none">
-            <p className="text-slate-400 italic">
-              (File content loading from OpenClaw API would appear here...)
-            </p>
-            <pre className="bg-slate-900 p-4 rounded-lg text-sm text-slate-300 mt-4">
-              {selectedFile.content}
-            </pre>
+        ) : (
+          <div className="h-full flex flex-col items-center justify-center text-slate-500">
+            <Brain className="w-16 h-16 mb-4 opacity-20" />
+            <p>Select a file from the brain to view</p>
           </div>
-        </div>
+        )}
       </div>
     </div>
   )

@@ -1,4 +1,4 @@
-import { Clock, Play, Pause, Edit, Trash2, Cpu, CheckCircle } from 'lucide-react'
+import { Clock, Cpu, CheckCircle, Plus } from 'lucide-react'
 
 export default function Automation() {
   return (
@@ -11,8 +11,12 @@ export default function Automation() {
             <Clock className="w-6 h-6 text-blue-400" />
             Cron Jobs
           </h2>
-          <button className="px-4 py-2 bg-blue-600 hover:bg-blue-500 text-white rounded-md text-sm font-medium">
-            + New Job
+          <button 
+            onClick={() => alert('Cron Job creation coming in Phase 2!')}
+            className="flex items-center gap-2 px-4 py-2 bg-blue-600 hover:bg-blue-500 text-white rounded-md text-sm font-medium active:scale-95 transition-transform"
+          >
+            <Plus className="w-4 h-4" />
+            New Job
           </button>
         </div>
 
@@ -36,20 +40,35 @@ export default function Automation() {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-          {/* Mock Skills */}
+          {/* Real Skills from OpenClaw */}
           <SkillCard 
-            name="Browser" 
-            description="Control web browser for research and automation"
+            name="Browser (OpenClaw)" 
+            description="Full browser automation. Can navigate websites, take screenshots, extract content, and interact with page elements."
             status="active"
           />
            <SkillCard 
             name="Filesystem" 
-            description="Read and write files in the workspace"
+            description="Read, write, edit, and manage files in the workspace. Essential for memory and project management."
             status="active"
           />
            <SkillCard 
-            name="Memory" 
-            description="Long-term semantic memory storage and retrieval"
+            name="Memory Search" 
+            description="Vector-based semantic search across all memory files. Allows Tony to recall past conversations and context."
+            status="active"
+          />
+           <SkillCard 
+            name="Terminal / Exec" 
+            description="Execute shell commands, manage processes, and run git operations."
+            status="active"
+          />
+          <SkillCard 
+            name="Cron" 
+            description="Schedule periodic tasks and reminders. Powers the Heartbeat system."
+            status="active"
+          />
+           <SkillCard 
+            name="Web Search (Brave)" 
+            description="Search the live web for real-time information and research."
             status="active"
           />
         </div>
@@ -60,17 +79,17 @@ export default function Automation() {
 
 function SkillCard({ name, description, status }: { name: string, description: string, status: 'active' | 'inactive' }) {
   return (
-    <div className="bg-slate-900/50 border border-slate-800 rounded-lg p-5">
-      <div className="flex justify-between items-start mb-2">
+    <div className="bg-slate-900/50 border border-slate-800 rounded-lg p-5 flex flex-col h-full">
+      <div className="flex justify-between items-start mb-3">
         <h3 className="font-semibold text-white">{name}</h3>
         {status === 'active' && (
-          <div className="flex items-center gap-1 text-xs text-green-400 bg-green-500/10 px-2 py-0.5 rounded-full border border-green-500/20">
+          <div className="flex items-center gap-1 text-[10px] uppercase font-bold tracking-wider text-green-400 bg-green-500/10 px-2 py-1 rounded-full border border-green-500/20">
             <CheckCircle className="w-3 h-3" />
             Active
           </div>
         )}
       </div>
-      <p className="text-sm text-slate-400">{description}</p>
+      <p className="text-sm text-slate-400 leading-relaxed">{description}</p>
     </div>
   )
 }
