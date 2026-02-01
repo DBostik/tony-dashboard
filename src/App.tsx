@@ -1,7 +1,14 @@
-import { Activity, Brain, Calendar, Zap } from 'lucide-react'
-import StatusCard from './components/StatusCard'
+import { useState } from 'react'
+import { Brain, Server, FileText, BarChart3 } from 'lucide-react'
+import Dashboard from './components/Dashboard'
+import SecondBrain from './components/SecondBrain'
+import Automation from './components/Automation'
+
+type Tab = 'dashboard' | 'brain' | 'automation' | 'logs'
 
 function App() {
+  const [activeTab, setActiveTab] = useState<Tab>('dashboard')
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950">
       {/* Header */}
@@ -16,112 +23,86 @@ function App() {
               </div>
             </div>
             
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-4">
+              <div className="text-right text-sm">
+                <div className="text-slate-400">MODEL</div>
+                <div className="text-white font-medium">gemini-3-flash-preview</div>
+              </div>
+              <div className="text-right text-sm">
+                <div className="text-slate-400">UPTIME</div>
+                <div className="text-white font-medium">2 days, 7 hours</div>
+              </div>
               <div className="flex items-center gap-2 px-3 py-1.5 bg-green-500/10 border border-green-500/20 rounded-full">
                 <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
-                <span className="text-sm text-green-400">Online</span>
+                <span className="text-sm text-green-400">CONNECTED</span>
               </div>
             </div>
+          </div>
+
+          {/* Tabs */}
+          <div className="flex gap-2 mt-4">
+            <button
+              onClick={() => setActiveTab('dashboard')}
+              className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
+                activeTab === 'dashboard'
+                  ? 'bg-blue-500 text-white'
+                  : 'text-slate-400 hover:text-white hover:bg-slate-800'
+              }`}
+            >
+              <BarChart3 className="w-4 h-4" />
+              Live Status
+            </button>
+            <button
+              onClick={() => setActiveTab('brain')}
+              className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
+                activeTab === 'brain'
+                  ? 'bg-blue-500 text-white'
+                  : 'text-slate-400 hover:text-white hover:bg-slate-800'
+              }`}
+            >
+              <Brain className="w-4 h-4" />
+              Second Brain
+            </button>
+            <button
+              onClick={() => setActiveTab('automation')}
+              className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
+                activeTab === 'automation'
+                  ? 'bg-blue-500 text-white'
+                  : 'text-slate-400 hover:text-white hover:bg-slate-800'
+              }`}
+            >
+              <Server className="w-4 h-4" />
+              Automation
+            </button>
+            <button
+              onClick={() => setActiveTab('logs')}
+              className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
+                activeTab === 'logs'
+                  ? 'bg-blue-500 text-white'
+                  : 'text-slate-400 hover:text-white hover:bg-slate-800'
+              }`}
+            >
+              <FileText className="w-4 h-4" />
+              System Logs
+            </button>
           </div>
         </div>
       </header>
 
-      {/* Main Content */}
-      <main className="container mx-auto px-4 py-8">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          
-          {/* System Status Card */}
-          <StatusCard />
-
-          {/* Quick Stats */}
-          <div className="bg-slate-900/50 border border-slate-800 rounded-lg p-6">
-            <div className="flex items-center gap-3 mb-4">
-              <Activity className="w-5 h-5 text-blue-400" />
-              <h2 className="text-lg font-semibold text-white">Quick Stats</h2>
-            </div>
-            <div className="space-y-3">
-              <div>
-                <p className="text-sm text-slate-400">Sessions Active</p>
-                <p className="text-2xl font-bold text-white">1</p>
-              </div>
-              <div>
-                <p className="text-sm text-slate-400">Messages Today</p>
-                <p className="text-2xl font-bold text-white">47</p>
-              </div>
+      {/* Tab Content */}
+      <main>
+        {activeTab === 'dashboard' && <Dashboard />}
+        {activeTab === 'brain' && <SecondBrain />}
+        {activeTab === 'automation' && <Automation />}
+        {activeTab === 'logs' && (
+          <div className="container mx-auto px-4 py-8">
+            <div className="bg-slate-900/50 border border-slate-800 rounded-lg p-8 text-center">
+              <FileText className="w-12 h-12 text-slate-600 mx-auto mb-4" />
+              <h2 className="text-xl font-semibold text-white mb-2">System Logs</h2>
+              <p className="text-slate-400">Coming soon...</p>
             </div>
           </div>
-
-          {/* Memory Quick Access */}
-          <div className="bg-slate-900/50 border border-slate-800 rounded-lg p-6">
-            <div className="flex items-center gap-3 mb-4">
-              <Brain className="w-5 h-5 text-purple-400" />
-              <h2 className="text-lg font-semibold text-white">Memory Files</h2>
-            </div>
-            <div className="space-y-2">
-              <button className="w-full text-left px-3 py-2 rounded-md hover:bg-slate-800 text-slate-300 text-sm transition-colors">
-                📝 MEMORY.md
-              </button>
-              <button className="w-full text-left px-3 py-2 rounded-md hover:bg-slate-800 text-slate-300 text-sm transition-colors">
-                😊 SOUL.md
-              </button>
-              <button className="w-full text-left px-3 py-2 rounded-md hover:bg-slate-800 text-slate-300 text-sm transition-colors">
-                👤 USER.md
-              </button>
-              <button className="w-full text-left px-3 py-2 rounded-md hover:bg-slate-800 text-slate-300 text-sm transition-colors">
-                🎯 IDENTITY.md
-              </button>
-            </div>
-          </div>
-
-          {/* Goals Tracker */}
-          <div className="bg-slate-900/50 border border-slate-800 rounded-lg p-6 col-span-full lg:col-span-2">
-            <div className="flex items-center gap-3 mb-4">
-              <Zap className="w-5 h-5 text-yellow-400" />
-              <h2 className="text-lg font-semibold text-white">Revenue Goals</h2>
-            </div>
-            <div className="space-y-4">
-              <div>
-                <div className="flex justify-between items-center mb-2">
-                  <span className="text-sm text-slate-400">Current Monthly Revenue</span>
-                  <span className="text-sm font-semibold text-white">~$4,150</span>
-                </div>
-                <div className="w-full bg-slate-800 rounded-full h-2">
-                  <div className="bg-blue-500 h-2 rounded-full" style={{ width: '42%' }}></div>
-                </div>
-                <p className="text-xs text-slate-500 mt-1">Target: $10,000/month by end of 2026</p>
-              </div>
-              
-              <div>
-                <div className="flex justify-between items-center mb-2">
-                  <span className="text-sm text-slate-400">Sustain Target</span>
-                  <span className="text-sm font-semibold text-white">$6,700</span>
-                </div>
-                <div className="w-full bg-slate-800 rounded-full h-2">
-                  <div className="bg-green-500 h-2 rounded-full" style={{ width: '62%' }}></div>
-                </div>
-                <p className="text-xs text-slate-500 mt-1">Gap: ~$2,550/month</p>
-              </div>
-            </div>
-          </div>
-
-          {/* Today's Tasks */}
-          <div className="bg-slate-900/50 border border-slate-800 rounded-lg p-6">
-            <div className="flex items-center gap-3 mb-4">
-              <Calendar className="w-5 h-5 text-red-400" />
-              <h2 className="text-lg font-semibold text-white">Due Today</h2>
-            </div>
-            <div className="space-y-2">
-              <div className="flex items-start gap-2">
-                <div className="w-2 h-2 rounded-full bg-red-500 mt-2"></div>
-                <div>
-                  <p className="text-sm text-white">Answer 3 accountability questions</p>
-                  <p className="text-xs text-slate-500">Pricing check, content outline, ChatGPT follow-up</p>
-                </div>
-              </div>
-            </div>
-          </div>
-
-        </div>
+        )}
       </main>
     </div>
   )
