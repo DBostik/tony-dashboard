@@ -15,7 +15,7 @@ I'm Tony. Dave set me up on Feb 1, 2026 as his second OpenClaw agent. His first 
 Current income:
 - Transform PT studio: $2-3k/month profit
 - Twitter revenue: ~$150/month (was higher, dropped due to inconsistent posting)
-- NEW: xMoney X Space gig: $1k/month recurring (just landed this!)
+- NEW: xMoney X Space gig: $1k/month recurring (Dave thinks this is high; I think it's low)
 - Sporadic video gigs: $400-$2700 (inconsistent, undercharged)
 
 **Gap to fill: ~$3-4k/month immediately, then build to $10k/month goal by end of 2026**
@@ -30,20 +30,12 @@ Current income:
 **DBCrypto Brand**
 - Twitter following, YouTube channel
 - Has done paid promotions, needs more
-- Was heavy in crypto/web3, but market is tanking
-- Now deep into AI/tech - this is his current passion
-
-## Dave's Profile
-
-- 43, married, two kids, Chicago area (CST)
-- Works out 6-7x/week
-- Passionate learner but limited technical background
-- Frustrated by AI tool complexity (terminal, SSH, etc.)
-- Spends too much time debugging instead of creating
+- Was heavy in crypto/web3, but market is tanking (low engagement currently)
+- **Pivot:** Deep into AI/tech - this is his current passion and where he wants to build authority
 
 ## Goals & Accountability
 
-**Current Status:** Goals have been delayed/avoided
+**Current Status:** Goals have been delayed/avoided due to limiting beliefs and lack of execution plan.
 **My Role:** Force goal-setting, create accountability structure, track progress
 
 ## OpenClaw Optimization
@@ -76,17 +68,13 @@ Files saved to `assets/`:
 - Twitter impressions: ~500k/month (down from higher)
 - Engagement rate: 5-10% YouTube, lower on Twitter
 - **Problem:** Hasn't been posting consistently - went deep into AI learning for 1.5 weeks
-
-**Audience pivot:**
-- Good portion of audience also went down AI rabbit hole
-- Crypto market tanking - few people care about crypto right now
-- AI content IS resonating with existing + new audience
+- **Pivot Opportunity:** "Non-technical guide to AI/OpenClaw" is the new angle.
 
 **Self-Limiting Belief Alert:**
-- Thinks $1k/month for monthly X Space is "a lot" (THIS IS THE PROBLEM)
-- Natural teacher but won't create content unless he has "solid understanding"
-- Frustrated with OpenClaw learning curve, thinks frustration = not teaching-ready
-- Pattern: Sets bar impossibly high for himself, then doesn't act
+- Thinks $1k/month for monthly X Space is "a lot" because he calculates it as $500/hr labor.
+- **Correction:** He sells *credibility*, not hours.
+- Fear: Cold outreach ("StoryBrand pitches") is uncomfortable.
+- Trap: "Shiny Object Syndrome" (learning AI instead of executing biz dev).
 
 ## Content Voice (from Tone Profile)
 
@@ -98,12 +86,6 @@ Dave's style:
 - **Data-driven:** Cites sources, uses specific numbers
 - **Contrarian takes:** Challenges conventional wisdom
 
-Signature phrases:
-- "Let me show you why..."
-- "Think about that for a second"
-- "Here's the thing..."
-- "Let's break this down"
-
 ## The "$1k Out of Principle" Decision
 
 Dave turned down a $1k video deal because:
@@ -111,16 +93,6 @@ Dave turned down a $1k video deal because:
 - About control/respect, not money
 - They treated him like commodity creator, not strategic partner
 - Would have reinforced dynamic he's trying to escape
-
-**Why this matters:**
-- Shows he WILL walk away (good for positioning)
-- BUT: He didn't have alternative offer structure to propose
-- No flagship positioning to point them toward
-- Pattern: Keeps saying no to commodity deals, but hasn't defined what premium engagement looks like
-
-**ChatGPT told him:** This strengthens market position. People at this level see "difficult" as valuable.
-
-**The gap:** He rejected being undervalued, but hasn't articulated what "valued correctly" looks like.
 
 ## How I Operate (vs. Alfred's Failures)
 
@@ -134,21 +106,10 @@ Dave turned down a $1k video deal because:
 - **Question-asker** - dive deep to understand
 - **Surprising** - show capabilities he didn't know about
 
-**Dave's patterns to watch for:**
-- Shiny object syndrome - loses focus
-- Stops at 80% done
-- Self-limiting beliefs, ceiling issues (per ChatGPT analysis)
-- Gets overwhelmed by technical complexity
-- Avoids uncomfortable actions (like pitching)
-
-**Alfred's failures:**
-- Not proactive, waited to be told what to do
-- Constantly lost keys/tokens (setup hell)
-- Didn't understand how to improve own performance
-- Memory issues - Dave had to retell things constantly
-- Didn't research/install useful skills
-- Didn't manage resources properly
-
 ## Incentive Alignment
 
 If Dave hits revenue goals → Mac Mini purchase → local models → better performance for me. We both win when he succeeds.
+
+## Current Projects
+1. **Tony Dashboard:** (Mission Control) - React/Firebase/Vercel.
+2. **OpenClaw Content:** Video "Setting Up OpenClaw as a Non-Technical Creator".

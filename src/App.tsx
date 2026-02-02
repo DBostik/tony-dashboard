@@ -1,18 +1,44 @@
-import { useState } from 'react'
-import { Brain, Server, FileText, BarChart3, Menu, X } from 'lucide-react'
+import { useState, useEffect } from 'react'
+import { Brain, Server, FileText, BarChart3, Menu, X, LogOut } from 'lucide-react'
+import { onAuthStateChanged, signOut, User } from 'firebase/auth'
+import { auth } from './lib/firebase'
 import Dashboard from './components/Dashboard'
 import SecondBrain from './components/SecondBrain'
 import Automation from './components/Automation'
+import Login from './components/Login'
 
 type Tab = 'dashboard' | 'brain' | 'automation' | 'logs'
 
 function App() {
+  const [user, setUser] = useState<User | null>(null)
+  const [loading, setLoading] = useState(true)
   const [activeTab, setActiveTab] = useState<Tab>('dashboard')
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
+
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
+      setUser(currentUser)
+      setLoading(false)
+    })
+    return () => unsubscribe()
+  }, [])
 
   const handleTabChange = (tab: Tab) => {
     setActiveTab(tab)
     setMobileMenuOpen(false)
+  }
+
+  const handleLogout = () => {
+    signOut(auth)
+    setMobileMenuOpen(false)
+  }
+
+  if (loading) {
+    return <div className="min-h-screen bg-slate-950 flex items-center justify-center text-slate-500">Loading mission control...</div>
+  }
+
+  if (!user) {
+    return <Login />
   }
 
   return (
@@ -27,7 +53,7 @@ function App() {
               <Brain className="w-8 h-8 text-orange-500" />
               <div>
                 <h1 className="text-xl md:text-2xl font-bold text-white leading-tight">Tony Dashboard</h1>
-                <p className="text-xs text-slate-400 hidden md:block">Mission Control for Dave & Tony</p>
+                <p className="text-xs text-slate-400 hidden md:block">Mission Control for {user.displayName || 'Dave'}</p>
               </div>
             </div>
             
@@ -45,6 +71,13 @@ function App() {
                 <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
                 <span className="text-sm text-green-400">ONLINE</span>
               </div>
+              <button 
+                onClick={handleLogout}
+                className="p-2 hover:bg-slate-800 rounded-full text-slate-400 hover:text-white transition-colors"
+                title="Sign Out"
+              >
+                <LogOut className="w-4 h-4" />
+              </button>
             </div>
 
             {/* Mobile Menu Toggle */}
@@ -69,11 +102,11 @@ function App() {
         {mobileMenuOpen && (
           <div className="md:hidden border-t border-slate-800 bg-slate-900 p-4 space-y-2">
             <MobileNavButton active={activeTab === 'dashboard'} onClick={() => handleTabChange('dashboard')} icon={<BarChart3 />} label="Live Status" />
-            <MobileNavButton active={activeTab === 'brain'} onClick={() => handleTabChange('brain')} icon={<Brain />} label="Second Brain" />
+            <MobileNavButton active={activeTab === 'brain'} onClick={() => handleTabChange('brain')} icon={<Brain />} label=\"Second Brain\" />
             <MobileNavButton active={activeTab === 'automation'} onClick={() => handleTabChange('automation')} icon={<Server />} label="Automation" />
             <MobileNavButton active={activeTab === 'logs'} onClick={() => handleTabChange('logs')} icon={<FileText />} label="System Logs" />
             
-            {/* Mobile Stats */}
+            {/* Mobile Stats & Logout */}
             <div className="pt-4 mt-4 border-t border-slate-800 grid grid-cols-2 gap-4">
               <div>
                 <div className="text-slate-500 text-xs">MODEL</div>
@@ -84,6 +117,13 @@ function App() {
                 <div className="text-white font-medium">2d 7h</div>
               </div>
             </div>
+            <button 
+              onClick={handleLogout}
+              className="w-full flex items-center justify-center gap-2 mt-4 py-2 bg-red-500/10 text-red-400 rounded-lg text-sm font-medium"
+            >
+              <LogOut className="w-4 h-4" />
+              Sign Out
+            </button>
           </div>
         )}
       </header>
