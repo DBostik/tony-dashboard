@@ -41,6 +41,20 @@ export default function StatusCard() {
           </div>
         </div>
 
+        {/* Context Usage */}
+        <div>
+          <div className="flex justify-between items-center mb-2">
+            <span className="text-sm text-slate-400">Context Usage</span>
+            <span className="text-sm text-slate-300">{status?.contextUsage || '---'}</span>
+          </div>
+          <div className="w-full bg-slate-800 rounded-full h-2 overflow-hidden">
+            <div 
+              className="bg-blue-500 h-2 transition-all duration-1000 ease-out" 
+              style={{ width: status?.contextUsagePercent || '0%' }}
+            ></div>
+          </div>
+        </div>
+
         {/* Sync Status */}
         <div className="flex items-center gap-2 text-sm">
           <div className={`w-2 h-2 rounded-full ${status ? 'bg-green-500 animate-pulse' : 'bg-slate-600'}`}></div>

@@ -1,7 +1,8 @@
 import { useState, useEffect } from 'react'
 import { Brain, Server, FileText, BarChart3, Menu, X, LogOut, Activity } from 'lucide-react'
 import { onAuthStateChanged, signOut, User, getRedirectResult } from 'firebase/auth'
-import { auth } from './lib/firebase'
+import { auth, db } from './lib/firebase'
+import { doc, onSnapshot } from 'firebase/firestore'
 import Dashboard from './components/Dashboard'
 import SecondBrain from './components/SecondBrain'
 import Automation from './components/Automation'
@@ -15,6 +16,17 @@ function App() {
   const [loading, setLoading] = useState(true)
   const [activeTab, setActiveTab] = useState<Tab>('dashboard')
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
+
+  const [status, setStatus] = useState<any>(null)
+
+  useEffect(() => {
+    const unsub = onSnapshot(doc(db, 'status', 'current'), (doc) => {
+      if (doc.exists()) {
+        setStatus(doc.data())
+      }
+    })
+    return () => unsub()
+  }, [])
 
   useEffect(() => {
     // Check for redirect results on mount
@@ -82,16 +94,16 @@ function App() {
             {/* Desktop Stats (Hidden on Mobile) */}
             <div className="hidden md:flex items-center gap-4">
               <div className="text-right text-sm">
-                <div className="text-slate-400 text-xs">MODEL</div>
-                <div className="text-white font-medium">gemini-3-pro</div>
+                <div className="text-slate-400 text-xs uppercase tracking-tighter">Model</div>
+                <div className="text-white font-medium">{status?.mainModel?.split('/').pop() || '---'}</div>
               </div>
               <div className="text-right text-sm">
-                <div className="text-slate-400 text-xs">UPTIME</div>
-                <div className="text-white font-medium">2d 7h</div>
+                <div className="text-slate-400 text-xs uppercase tracking-tighter">Uptime</div>
+                <div className="text-white font-medium">{status?.uptime || '---'}</div>
               </div>
               <div className="flex items-center gap-2 px-3 py-1.5 bg-green-500/10 border border-green-500/20 rounded-full">
-                <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
-                <span className="text-sm text-green-400">ONLINE</span>
+                <div className={`w-2 h-2 rounded-full ${status ? 'bg-green-500 animate-pulse' : 'bg-slate-600'}`}></div>
+                <span className="text-sm text-green-400">{status ? 'ONLINE' : 'WAITING'}</span>
               </div>
               <button 
                 onClick={handleLogout}
@@ -134,11 +146,11 @@ function App() {
             <div className="pt-4 mt-4 border-t border-slate-800 grid grid-cols-2 gap-4">
               <div>
                 <div className="text-slate-500 text-xs">MODEL</div>
-                <div className="text-white font-medium">gemini-3-pro</div>
+                <div className="text-white font-medium">{status?.mainModel?.split('/').pop() || '---'}</div>
               </div>
               <div>
                 <div className="text-slate-500 text-xs">UPTIME</div>
-                <div className="text-white font-medium">2d 7h</div>
+                <div className="text-white font-medium">{status?.uptime || '---'}</div>
               </div>
             </div>
             <button 
