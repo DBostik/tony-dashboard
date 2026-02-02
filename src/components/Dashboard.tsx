@@ -55,6 +55,7 @@ export default function Dashboard({ setTab, setSelectedFile, setSelectedCategory
                 if (file) {
                   setSelectedFile(file)
                   setSelectedCategory('CORE')
+                  setTab('brain')
                 }
               }}
               className="w-full text-left px-3 py-2 rounded-md hover:bg-slate-800 text-slate-300 text-sm transition-colors flex items-center justify-between group"
@@ -68,6 +69,7 @@ export default function Dashboard({ setTab, setSelectedFile, setSelectedCategory
                 if (file) {
                   setSelectedFile(file)
                   setSelectedCategory('CORE')
+                  setTab('brain')
                 }
               }}
               className="w-full text-left px-3 py-2 rounded-md hover:bg-slate-800 text-slate-300 text-sm transition-colors flex items-center justify-between group"
@@ -81,6 +83,7 @@ export default function Dashboard({ setTab, setSelectedFile, setSelectedCategory
                 if (file) {
                   setSelectedFile(file)
                   setSelectedCategory('CORE')
+                  setTab('brain')
                 }
               }}
               className="w-full text-left px-3 py-2 rounded-md hover:bg-slate-800 text-slate-300 text-sm transition-colors flex items-center justify-between group"
@@ -94,6 +97,7 @@ export default function Dashboard({ setTab, setSelectedFile, setSelectedCategory
                 if (file) {
                   setSelectedFile(file)
                   setSelectedCategory('CORE')
+                  setTab('brain')
                 }
               }}
               className="w-full text-left px-3 py-2 rounded-md hover:bg-slate-800 text-slate-300 text-sm transition-colors flex items-center justify-between group"
