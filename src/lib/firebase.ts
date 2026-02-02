@@ -4,7 +4,7 @@ import { getAuth, GoogleAuthProvider } from 'firebase/auth'
 
 const firebaseConfig = {
   apiKey: "AIzaSyCaiHsciUHa30tjhpa7rB5YLZtRo5jI47E",
-  authDomain: "tony-dashboard.vercel.app",
+  authDomain: "tony-dashboard-2c421.firebaseapp.com",
   projectId: "tony-dashboard-2c421",
   storageBucket: "tony-dashboard-2c421.firebasestorage.app",
   messagingSenderId: "663903704914",
