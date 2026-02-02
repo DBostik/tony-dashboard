@@ -1,11 +1,18 @@
-import { signInWithPopup } from 'firebase/auth'
+import { signInWithPopup, signInWithRedirect } from 'firebase/auth'
 import { auth, googleProvider } from '../lib/firebase'
 import { Brain, Lock } from 'lucide-react'
 
 export default function Login() {
   const handleLogin = async () => {
     try {
-      await signInWithPopup(auth, googleProvider)
+      // Use redirect on mobile/tablets, popup on desktop
+      const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+      
+      if (isMobile) {
+        await signInWithRedirect(auth, googleProvider);
+      } else {
+        await signInWithPopup(auth, googleProvider);
+      }
     } catch (error) {
       console.error("Login failed:", error)
       alert("Login failed. Check console for details.")
