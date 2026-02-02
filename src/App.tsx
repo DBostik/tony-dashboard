@@ -148,7 +148,14 @@ function App() {
 }
 
 // Helper Components
-function NavButton({ active, onClick, icon, label }: any) {
+interface NavButtonProps {
+  active: boolean
+  onClick: () => void
+  icon: React.ReactNode
+  label: string
+}
+
+function NavButton({ active, onClick, icon, label }: NavButtonProps) {
   return (
     <button
       onClick={onClick}
@@ -164,7 +171,7 @@ function NavButton({ active, onClick, icon, label }: any) {
   )
 }
 
-function MobileNavButton({ active, onClick, icon, label }: any) {
+function MobileNavButton({ active, onClick, icon, label }: NavButtonProps) {
   return (
     <button
       onClick={onClick}
