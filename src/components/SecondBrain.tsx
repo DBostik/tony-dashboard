@@ -1,29 +1,37 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { Search, RotateCw, FileText, Folder, Settings, Calendar, Brain, ArrowLeft } from 'lucide-react'
-
-// Mock data for initial build
-const FILES = [
-  { id: '1', title: '2026-02-01.md', category: 'DAILY', date: '2026-02-01', content: '# Daily Log...' },
-  { id: '2', title: 'MEMORY.md', category: 'CORE', date: '2026-02-01', content: '# Long-Term Memory\n\nThis is the core memory file for Tony...' },
-  { id: '3', title: 'SOUL.md', category: 'CORE', date: '2026-01-30', content: '# SOUL.md - Who You Are...' },
-  { id: '4', title: 'media-kit.md', category: 'NOTES', date: '2026-01-30', content: '# Media Kit...' },
-  { id: '5', title: 'PLAN.md', category: 'PROJECTS', date: '2026-02-01', content: '# Tony Dashboard Plan...' },
-]
-
-const CATEGORIES = ['ALL', 'DAILY', 'CORE', 'NOTES', 'PROJECTS', 'SYSTEMS', 'AGENTS']
+import { db } from '../lib/firebase'
+import { collection, onSnapshot, query, orderBy } from 'firebase/firestore'
 
 export default function SecondBrain() {
+  const [files, setFiles] = useState<any[]>([])
   const [selectedCategory, setSelectedCategory] = useState('ALL')
   const [searchQuery, setSearchQuery] = useState('')
-  const [selectedFile, setSelectedFile] = useState<typeof FILES[0] | null>(null)
+  const [selectedFile, setSelectedFile] = useState<any | null>(null)
+  const [loading, setLoading] = useState(true)
+
+  useEffect(() => {
+    const q = query(collection(db, 'brain'), orderBy('updatedAt', 'desc'))
+    const unsub = onSnapshot(q, (snapshot) => {
+      const docs = snapshot.docs.map(doc => ({
+        id: doc.id,
+        ...doc.data()
+      }))
+      setFiles(docs)
+      setLoading(false)
+    })
+    return () => unsub()
+  }, [])
+
+  const CATEGORIES = ['ALL', 'DAILY', 'CORE', 'NOTES', 'PROJECTS', 'SYSTEMS', 'AGENTS']
 
   // Mobile: If a file is selected, show content view. If null, show list view.
   const showList = !selectedFile
   const showContent = !!selectedFile
 
-  const filteredFiles = FILES.filter(file => {
+  const filteredFiles = files.filter(file => {
     const matchesCategory = selectedCategory === 'ALL' || file.category === selectedCategory
-    const matchesSearch = file.title.toLowerCase().includes(searchQuery.toLowerCase())
+    const matchesSearch = file.title?.toLowerCase().includes(searchQuery.toLowerCase())
     return matchesCategory && matchesSearch
   })
 
@@ -115,14 +123,13 @@ export default function SecondBrain() {
                 <span className="text-xs font-bold text-blue-400 mb-1 block">{selectedFile.category}</span>
                 <h1 className="text-2xl md:text-3xl font-bold text-white break-all">{selectedFile.title}</h1>
               </div>
-              <div className="text-sm text-slate-500 whitespace-nowrap ml-4">{selectedFile.date}</div>
+              <div className="text-sm text-slate-500 whitespace-nowrap ml-4">
+                {selectedFile.updatedAt?.toDate ? selectedFile.updatedAt.toDate().toLocaleDateString() : 'Recent'}
+              </div>
             </div>
             
             <div className="prose prose-invert max-w-none">
               <div className="p-4 bg-slate-900/50 border border-slate-800 rounded-lg">
-                 <p className="text-slate-400 italic mb-4">
-                  (This is a preview. Real content will load from OpenClaw API)
-                </p>
                 <pre className="whitespace-pre-wrap text-sm text-slate-300 font-mono overflow-x-auto">
                   {selectedFile.content}
                 </pre>

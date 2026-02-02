@@ -1,12 +1,19 @@
+import { useState, useEffect } from 'react'
 import { Activity, Clock, Cpu, Zap } from 'lucide-react'
-
-const MOCK_LOGS = [
-  { id: 1, time: '2:15 PM', agent: 'Status Sync', action: 'Pushing system metrics', model: 'GLM 4.7', status: 'success', cost: '0.0004' },
-  { id: 2, time: '1:00 PM', agent: 'Status Sync', action: 'Pushing system metrics', model: 'GLM 4.7', status: 'success', cost: '0.0004' },
-  { id: 3, time: '12:00 PM', agent: 'Status Sync', action: 'Pushing system metrics', model: 'GLM 4.7', status: 'success', cost: '0.0004' },
-]
+import { db } from '../lib/firebase'
+import { collection, onSnapshot, query, orderBy, limit } from 'firebase/firestore'
 
 export default function AgentHive() {
+  const [logs, setLogs] = useState<any[]>([])
+
+  useEffect(() => {
+    const q = query(collection(db, 'subagent_logs'), orderBy('timestamp', 'desc'), limit(50))
+    const unsub = onSnapshot(q, (snapshot) => {
+      setLogs(snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() })))
+    })
+    return () => unsub()
+  }, [])
+
   return (
     <div className="container mx-auto px-4 py-8 max-w-6xl">
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8">
@@ -20,12 +27,12 @@ export default function AgentHive() {
         
         <div className="flex gap-4">
           <div className="bg-slate-900/50 border border-slate-800 rounded-lg px-4 py-2">
-            <div className="text-xs text-slate-500 uppercase font-bold tracking-wider">Active Workers</div>
-            <div className="text-xl font-mono text-white">01</div>
+            <div className="text-xs text-slate-500 uppercase font-bold tracking-wider">Total Actions</div>
+            <div className="text-xl font-mono text-white">{logs.length}</div>
           </div>
           <div className="bg-slate-900/50 border border-slate-800 rounded-lg px-4 py-2">
-            <div className="text-xs text-slate-500 uppercase font-bold tracking-wider">Today's Cost</div>
-            <div className="text-xl font-mono text-green-400">$0.0012</div>
+            <div className="text-xs text-slate-500 uppercase font-bold tracking-wider">Last Activity</div>
+            <div className="text-xl font-mono text-green-400">{logs[0]?.time || '--:--'}</div>
           </div>
         </div>
       </div>
@@ -52,7 +59,7 @@ export default function AgentHive() {
               </tr>
             </thead>
             <tbody className="divide-y divide-slate-800/50">
-              {MOCK_LOGS.map((log) => (
+              {logs.map((log) => (
                 <tr key={log.id} className="hover:bg-slate-800/30 transition-colors group">
                   <td className="px-6 py-4 whitespace-nowrap">
                     <div className="flex items-center gap-2 text-sm text-slate-300">
@@ -79,12 +86,23 @@ export default function AgentHive() {
                     ${log.cost}
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-right">
-                    <span className="text-[10px] font-bold px-2 py-0.5 rounded bg-green-500/10 text-green-400 border border-green-500/20">
-                      {log.status.toUpperCase()}
+                    <span className={`text-[10px] font-bold px-2 py-0.5 rounded border ${
+                      log.status === 'success' 
+                        ? 'bg-green-500/10 text-green-400 border-green-500/20' 
+                        : 'bg-red-500/10 text-red-400 border-red-500/20'
+                    }`}>
+                      {log.status?.toUpperCase() || 'UNKNOWN'}
                     </span>
                   </td>
                 </tr>
               ))}
+              {logs.length === 0 && (
+                <tr>
+                  <td colSpan={6} className="px-6 py-12 text-center text-slate-500 italic">
+                    No activity logs found. Waiting for first sub-agent run...
+                  </td>
+                </tr>
+              )}
             </tbody>
           </table>
         </div>
