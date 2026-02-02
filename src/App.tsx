@@ -58,6 +58,10 @@ function App() {
   }, [])
 
   const handleTabChange = (tab: Tab) => {
+    if (tab !== 'brain') {
+      setSelectedFile(null)
+      setSelectedCategory('ALL')
+    }
     setActiveTab(tab)
     setMobileMenuOpen(false)
   }
@@ -128,11 +132,11 @@ function App() {
 
           {/* Desktop Tabs */}
           <div className="hidden md:flex gap-2 mt-4">
-            <NavButton active={activeTab === 'dashboard'} onClick={() => setActiveTab('dashboard')} icon={<BarChart3 />} label="Live Status" />
-            <NavButton active={activeTab === 'brain'} onClick={() => setActiveTab('brain')} icon={<Brain />} label="Second Brain" />
-            <NavButton active={activeTab === 'hive'} onClick={() => setActiveTab('hive')} icon={<Activity />} label="Agent Hive" />
-            <NavButton active={activeTab === 'automation'} onClick={() => setActiveTab('automation')} icon={<Server />} label="Automation" />
-            <NavButton active={activeTab === 'logs'} onClick={() => setActiveTab('logs')} icon={<FileText />} label="System Logs" />
+            <NavButton active={activeTab === 'dashboard'} onClick={() => handleTabChange('dashboard')} icon={<BarChart3 />} label="Live Status" />
+            <NavButton active={activeTab === 'brain'} onClick={() => handleTabChange('brain')} icon={<Brain />} label="Second Brain" />
+            <NavButton active={activeTab === 'hive'} onClick={() => handleTabChange('hive')} icon={<Activity />} label="Agent Hive" />
+            <NavButton active={activeTab === 'automation'} onClick={() => handleTabChange('automation')} icon={<Server />} label="Automation" />
+            <NavButton active={activeTab === 'logs'} onClick={() => handleTabChange('logs')} icon={<FileText />} label="System Logs" />
           </div>
         </div>
 
