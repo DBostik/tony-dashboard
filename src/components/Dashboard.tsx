@@ -1,7 +1,22 @@
-import { Activity, Brain, Calendar, Zap } from 'lucide-react'
+import { Activity, Brain, Calendar, Zap, ArrowLeft } from 'lucide-react'
 import StatusCard from './StatusCard'
+import { useState, useEffect } from 'react'
+import { db } from '../lib/firebase'
+import { collection, onSnapshot } from 'firebase/firestore'
 
-export default function Dashboard() {
+export default function Dashboard({ setTab, setSelectedFile, setSelectedCategory }: { 
+  setTab: (tab: any) => void, 
+  setSelectedFile: (file: any) => void,
+  setSelectedCategory: (cat: string) => void
+}) {
+  const [files, setFiles] = useState<any[]>([])
+
+  useEffect(() => {
+    const unsub = onSnapshot(collection(db, 'brain'), (snapshot) => {
+      setFiles(snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() })))
+    })
+    return () => unsub()
+  }, [])
   return (
     <div className="container mx-auto px-4 py-8">
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -34,17 +49,57 @@ export default function Dashboard() {
             <h2 className="text-lg font-semibold text-white">Memory Files</h2>
           </div>
           <div className="space-y-2">
-            <button className="w-full text-left px-3 py-2 rounded-md hover:bg-slate-800 text-slate-300 text-sm transition-colors">
-              📝 MEMORY.md
+            <button 
+              onClick={() => {
+                const file = files.find(f => f.title === 'MEMORY.md')
+                if (file) {
+                  setSelectedFile(file)
+                  setSelectedCategory('CORE')
+                }
+              }}
+              className="w-full text-left px-3 py-2 rounded-md hover:bg-slate-800 text-slate-300 text-sm transition-colors flex items-center justify-between group"
+            >
+              <span>📝 MEMORY.md</span>
+              <ArrowLeft className="w-3 h-3 opacity-0 group-hover:opacity-100 rotate-180 transition-opacity" />
             </button>
-            <button className="w-full text-left px-3 py-2 rounded-md hover:bg-slate-800 text-slate-300 text-sm transition-colors">
-              😊 SOUL.md
+            <button 
+              onClick={() => {
+                const file = files.find(f => f.title === 'SOUL.md')
+                if (file) {
+                  setSelectedFile(file)
+                  setSelectedCategory('CORE')
+                }
+              }}
+              className="w-full text-left px-3 py-2 rounded-md hover:bg-slate-800 text-slate-300 text-sm transition-colors flex items-center justify-between group"
+            >
+              <span>😊 SOUL.md</span>
+              <ArrowLeft className="w-3 h-3 opacity-0 group-hover:opacity-100 rotate-180 transition-opacity" />
             </button>
-            <button className="w-full text-left px-3 py-2 rounded-md hover:bg-slate-800 text-slate-300 text-sm transition-colors">
-              👤 USER.md
+            <button 
+              onClick={() => {
+                const file = files.find(f => f.title === 'USER.md')
+                if (file) {
+                  setSelectedFile(file)
+                  setSelectedCategory('CORE')
+                }
+              }}
+              className="w-full text-left px-3 py-2 rounded-md hover:bg-slate-800 text-slate-300 text-sm transition-colors flex items-center justify-between group"
+            >
+              <span>👤 USER.md</span>
+              <ArrowLeft className="w-3 h-3 opacity-0 group-hover:opacity-100 rotate-180 transition-opacity" />
             </button>
-            <button className="w-full text-left px-3 py-2 rounded-md hover:bg-slate-800 text-slate-300 text-sm transition-colors">
-              🎯 IDENTITY.md
+            <button 
+              onClick={() => {
+                const file = files.find(f => f.title === 'IDENTITY.md')
+                if (file) {
+                  setSelectedFile(file)
+                  setSelectedCategory('CORE')
+                }
+              }}
+              className="w-full text-left px-3 py-2 rounded-md hover:bg-slate-800 text-slate-300 text-sm transition-colors flex items-center justify-between group"
+            >
+              <span>🎯 IDENTITY.md</span>
+              <ArrowLeft className="w-3 h-3 opacity-0 group-hover:opacity-100 rotate-180 transition-opacity" />
             </button>
           </div>
         </div>
@@ -88,10 +143,10 @@ export default function Dashboard() {
           </div>
           <div className="space-y-2">
             <div className="flex items-start gap-2">
-              <div className="w-2 h-2 rounded-full bg-red-500 mt-2"></div>
+              <div className="w-2 h-2 rounded-full bg-blue-500 mt-2"></div>
               <div>
-                <p className="text-sm text-white">Answer 3 accountability questions</p>
-                <p className="text-xs text-slate-500">Pricing check, content outline, ChatGPT follow-up</p>
+                <p className="text-sm text-white">Refine Morning & EOD Briefs</p>
+                <p className="text-xs text-slate-500">Customize tone, accountability, and auto-sync to brain.</p>
               </div>
             </div>
           </div>

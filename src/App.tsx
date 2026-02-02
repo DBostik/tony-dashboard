@@ -67,6 +67,9 @@ function App() {
     setMobileMenuOpen(false)
   }
 
+  const [selectedCategory, setSelectedCategory] = useState('ALL')
+  const [selectedFile, setSelectedFile] = useState<any | null>(null)
+
   if (loading) {
     return <div className="min-h-screen bg-slate-950 flex items-center justify-center text-slate-500">Loading mission control...</div>
   }
@@ -86,7 +89,7 @@ function App() {
             <div className="flex items-center gap-3">
               <Brain className="w-8 h-8 text-orange-500" />
               <div>
-                <h1 className="text-xl md:text-2xl font-bold text-white leading-tight">Tony Dashboard</h1>
+                <h1 className="text-xl md:text-2xl font-bold text-white leading-tight cursor-pointer" onClick={() => setActiveTab('dashboard')}>Tony Dashboard</h1>
                 <p className="text-xs text-slate-400 hidden md:block">Mission Control for {user.displayName || 'Dave'}</p>
               </div>
             </div>
@@ -166,8 +169,20 @@ function App() {
 
       {/* Tab Content */}
       <main>
-        {activeTab === 'dashboard' && <Dashboard />}
-        {activeTab === 'brain' && <SecondBrain />}
+        {activeTab === 'dashboard' && (
+          <Dashboard 
+            setTab={setActiveTab} 
+            setSelectedFile={setSelectedFile} 
+            setSelectedCategory={setSelectedCategory} 
+          />
+        )}
+        {activeTab === 'brain' && (
+          <SecondBrain 
+            initialFile={selectedFile} 
+            initialCategory={selectedCategory} 
+            onFileCleared={() => setSelectedFile(null)}
+          />
+        )}
         {activeTab === 'hive' && <AgentHive />}
         {activeTab === 'automation' && <Automation />}
         {activeTab === 'logs' && (

@@ -3,12 +3,21 @@ import { Search, RotateCw, FileText, Folder, Settings, Calendar, Brain, ArrowLef
 import { db } from '../lib/firebase'
 import { collection, onSnapshot, query, orderBy } from 'firebase/firestore'
 
-export default function SecondBrain() {
+export default function SecondBrain({ initialFile, initialCategory, onFileCleared }: { 
+  initialFile?: any, 
+  initialCategory?: string,
+  onFileCleared: () => void 
+}) {
   const [files, setFiles] = useState<any[]>([])
-  const [selectedCategory, setSelectedCategory] = useState('ALL')
+  const [selectedCategory, setSelectedCategory] = useState(initialCategory || 'ALL')
   const [searchQuery, setSearchQuery] = useState('')
-  const [selectedFile, setSelectedFile] = useState<any | null>(null)
+  const [selectedFile, setSelectedFile] = useState<any | null>(initialFile || null)
   const [loading, setLoading] = useState(true)
+
+  useEffect(() => {
+    if (initialFile) setSelectedFile(initialFile)
+    if (initialCategory) setSelectedCategory(initialCategory)
+  }, [initialFile, initialCategory])
 
   useEffect(() => {
     const q = query(collection(db, 'brain'), orderBy('updatedAt', 'desc'))
