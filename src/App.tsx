@@ -102,7 +102,7 @@ function App() {
         {mobileMenuOpen && (
           <div className="md:hidden border-t border-slate-800 bg-slate-900 p-4 space-y-2">
             <MobileNavButton active={activeTab === 'dashboard'} onClick={() => handleTabChange('dashboard')} icon={<BarChart3 />} label="Live Status" />
-            <MobileNavButton active={activeTab === 'brain'} onClick={() => handleTabChange('brain')} icon={<Brain />} label=\"Second Brain\" />
+            <MobileNavButton active={activeTab === 'brain'} onClick={() => handleTabChange('brain')} icon={<Brain />} label="Second Brain" />
             <MobileNavButton active={activeTab === 'automation'} onClick={() => handleTabChange('automation')} icon={<Server />} label="Automation" />
             <MobileNavButton active={activeTab === 'logs'} onClick={() => handleTabChange('logs')} icon={<FileText />} label="System Logs" />
             
