@@ -20,7 +20,12 @@ function App() {
     getRedirectResult(auth)
       .then((result) => {
         if (result?.user) {
-          setUser(result.user)
+          if (result.user.email === 'dabosti@gmail.com') {
+            setUser(result.user)
+          } else {
+            signOut(auth)
+            alert("Unauthorized access. This incident will be reported to Tony.")
+          }
         }
       })
       .catch((error) => {
@@ -28,7 +33,12 @@ function App() {
       })
 
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
-      setUser(currentUser)
+      if (currentUser && currentUser.email !== 'dabosti@gmail.com') {
+        signOut(auth)
+        setUser(null)
+      } else {
+        setUser(currentUser)
+      }
       setLoading(false)
     })
     return () => unsubscribe()
