@@ -1,13 +1,14 @@
 import { useState, useEffect } from 'react'
-import { Brain, Server, FileText, BarChart3, Menu, X, LogOut } from 'lucide-react'
+import { Brain, Server, FileText, BarChart3, Menu, X, LogOut, Activity } from 'lucide-react'
 import { onAuthStateChanged, signOut, User, getRedirectResult } from 'firebase/auth'
 import { auth } from './lib/firebase'
 import Dashboard from './components/Dashboard'
 import SecondBrain from './components/SecondBrain'
 import Automation from './components/Automation'
+import AgentHive from './components/AgentHive'
 import Login from './components/Login'
 
-type Tab = 'dashboard' | 'brain' | 'automation' | 'logs'
+type Tab = 'dashboard' | 'brain' | 'automation' | 'logs' | 'hive'
 
 function App() {
   const [user, setUser] = useState<User | null>(null)
@@ -114,6 +115,7 @@ function App() {
           <div className="hidden md:flex gap-2 mt-4">
             <NavButton active={activeTab === 'dashboard'} onClick={() => setActiveTab('dashboard')} icon={<BarChart3 />} label="Live Status" />
             <NavButton active={activeTab === 'brain'} onClick={() => setActiveTab('brain')} icon={<Brain />} label="Second Brain" />
+            <NavButton active={activeTab === 'hive'} onClick={() => setActiveTab('hive')} icon={<Activity />} label="Agent Hive" />
             <NavButton active={activeTab === 'automation'} onClick={() => setActiveTab('automation')} icon={<Server />} label="Automation" />
             <NavButton active={activeTab === 'logs'} onClick={() => setActiveTab('logs')} icon={<FileText />} label="System Logs" />
           </div>
@@ -124,6 +126,7 @@ function App() {
           <div className="md:hidden border-t border-slate-800 bg-slate-900 p-4 space-y-2">
             <MobileNavButton active={activeTab === 'dashboard'} onClick={() => handleTabChange('dashboard')} icon={<BarChart3 />} label="Live Status" />
             <MobileNavButton active={activeTab === 'brain'} onClick={() => handleTabChange('brain')} icon={<Brain />} label="Second Brain" />
+            <MobileNavButton active={activeTab === 'hive'} onClick={() => handleTabChange('hive')} icon={<Activity />} label="Agent Hive" />
             <MobileNavButton active={activeTab === 'automation'} onClick={() => handleTabChange('automation')} icon={<Server />} label="Automation" />
             <MobileNavButton active={activeTab === 'logs'} onClick={() => handleTabChange('logs')} icon={<FileText />} label="System Logs" />
             
@@ -153,6 +156,7 @@ function App() {
       <main>
         {activeTab === 'dashboard' && <Dashboard />}
         {activeTab === 'brain' && <SecondBrain />}
+        {activeTab === 'hive' && <AgentHive />}
         {activeTab === 'automation' && <Automation />}
         {activeTab === 'logs' && (
           <div className="container mx-auto px-4 py-8">

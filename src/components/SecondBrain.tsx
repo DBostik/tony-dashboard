@@ -10,7 +10,7 @@ const FILES = [
   { id: '5', title: 'PLAN.md', category: 'PROJECTS', date: '2026-02-01', content: '# Tony Dashboard Plan...' },
 ]
 
-const CATEGORIES = ['ALL', 'DAILY', 'CORE', 'NOTES', 'PROJECTS', 'SYSTEMS']
+const CATEGORIES = ['ALL', 'DAILY', 'CORE', 'NOTES', 'PROJECTS', 'SYSTEMS', 'AGENTS']
 
 export default function SecondBrain() {
   const [selectedCategory, setSelectedCategory] = useState('ALL')
