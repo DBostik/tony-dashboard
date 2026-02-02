@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import { Brain, Server, FileText, BarChart3, Menu, X, LogOut } from 'lucide-react'
-import { onAuthStateChanged, signOut, User } from 'firebase/auth'
+import { onAuthStateChanged, signOut, User, getRedirectResult } from 'firebase/auth'
 import { auth } from './lib/firebase'
 import Dashboard from './components/Dashboard'
 import SecondBrain from './components/SecondBrain'
@@ -16,6 +16,17 @@ function App() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
 
   useEffect(() => {
+    // Check for redirect results on mount
+    getRedirectResult(auth)
+      .then((result) => {
+        if (result?.user) {
+          setUser(result.user)
+        }
+      })
+      .catch((error) => {
+        console.error("Redirect error:", error)
+      })
+
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
       setUser(currentUser)
       setLoading(false)
