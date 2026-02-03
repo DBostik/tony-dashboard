@@ -32,16 +32,26 @@ export default function SecondBrain({ initialFile, initialCategory, onFileCleare
     return () => unsub()
   }, [])
 
-  const CATEGORIES = ['ALL', 'DAILY', 'CORE', 'NOTES', 'PROJECTS', 'SYSTEMS', 'AGENTS']
+  const CATEGORIES = ['ALL', 'DAILY', 'CORE', 'NOTES', 'PROJECTS', 'SYSTEMS', 'AGENTS', 'ARCHIVE']
 
   // Mobile: If a file is selected, show content view. If null, show list view.
   const showList = !selectedFile
   const showContent = !!selectedFile
 
   const filteredFiles = files.filter(file => {
-    const matchesCategory = selectedCategory === 'ALL' || file.category === selectedCategory
-    const matchesSearch = file.title?.toLowerCase().includes(searchQuery.toLowerCase())
-    return matchesCategory && matchesSearch
+    // ARCHIVE logic: 
+    // If category is ARCHIVE, only show in ARCHIVE.
+    // If selectedCategory is NOT ARCHIVE, filter out ARCHIVE files from 'ALL' and others.
+    if (selectedCategory === 'ARCHIVE') {
+      return file.category === 'ARCHIVE'
+    } else {
+      // Don't show ARCHIVE files in other pills (including ALL)
+      if (file.category === 'ARCHIVE') return false
+      
+      const matchesCategory = selectedCategory === 'ALL' || file.category === selectedCategory
+      const matchesSearch = file.title?.toLowerCase().includes(searchQuery.toLowerCase())
+      return matchesCategory && matchesSearch
+    }
   })
 
   return (
